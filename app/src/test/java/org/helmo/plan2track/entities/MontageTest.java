@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MontageTest {
 
-    @Test
+    /*@Test
     void returnName() {
         Montage m = new Montage("montage");
 
@@ -63,21 +63,10 @@ class MontageTest {
         String expected = "\tmontage\n\t(Aucune tâche)\n";
         assertEquals(expected, m.printMontage());
 
-        /*Task t = new Task("tache", 1);
+        Task t = new Task("tache", 1);
         Task t2 = new Task("tache2", 1);
         Task t3 = new Task("tache3", 1);
-        m.addTasks(t,t2,t3);*/
-    }
-
-    @Test
-    void verifyPrintWithTask() {
-        Montage m = new Montage("montage");
-
-        Task t = new Task("tache", 1);
-        m.addTasks(t);
-
-        String expected = "\tmontage\ntache : / 1j Requis : - \n";
-        assertEquals(expected, m.printMontage());
+        m.addTasks(t,t2,t3);
     }
 
     // Plan de test suppression tache
@@ -109,5 +98,5 @@ class MontageTest {
 
         m.deleteTask("tache"); // Supprime la tache --> rien ne se passe
         assertFalse(m.checkTaskExist("tache")); // Vérifie que la tache n'existe pas
-    }
+    }*/
 }

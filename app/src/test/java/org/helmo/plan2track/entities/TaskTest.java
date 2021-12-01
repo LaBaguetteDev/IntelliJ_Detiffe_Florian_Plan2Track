@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
 
-    @Test
+    /*@Test
     void initTaskWithManyPriorTasks() {
         Task tAnt0 = new Task("tache anterieur0", 1);
         Task tAnt1 = new Task("tache anterieur1", 1);
@@ -92,5 +92,5 @@ class TaskTest {
 
         // Vérifie que la tache antérieur n'est plus présente dans la nouvelle tache
         Assertions.assertFalse(t.checkPriorTaskExist("tache anterieur"));
-    }
+    }*/
 }

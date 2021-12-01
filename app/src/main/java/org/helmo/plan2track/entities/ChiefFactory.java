@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ChiefFactory {
 
-    private final List<Chief> teamLeaders = new ArrayList<Chief>();
+    private final List<Chief> teamLeaders = new ArrayList<>();
 
     /**
      * Initialise la liste des chefs d'équipe

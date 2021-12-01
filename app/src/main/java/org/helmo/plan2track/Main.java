@@ -43,9 +43,9 @@ public class Main extends Application {
         EditView eView = new EditView(esv, rsv);
 
         var mv = new MainView(
-                cView.getCreateViewBp(),
-                mView.getMontageView(),
-                eView.getEditView());
+                cView.getCreateViewTab(),
+                mView.getMontageViewTab(),
+                eView.getEditViewTab());
 
         Scene scene = new Scene(mv.getBorderPane(), 800, 600);
 

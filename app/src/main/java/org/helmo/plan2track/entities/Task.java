@@ -13,7 +13,7 @@ public class Task {
     private final String name;
     private String description = "";
     private final int duration;
-    private final List<Task> priors = new ArrayList<Task>();
+    private List<Task> priors = new ArrayList<>();
     private Chief chief = new Chief("");
 
     /**
@@ -70,6 +70,10 @@ public class Task {
         return description;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
     public String getDurationString() {
         return duration + " jours";
     }
@@ -83,6 +87,10 @@ public class Task {
 
     public List<Task> getPriors() {
         return priors;
+    }
+
+    public void setPriors(List<Task> priors) {
+        this.priors = List.copyOf(priors);
     }
 
     /**
@@ -114,24 +122,5 @@ public class Task {
      */
     public void addChief(Chief chief) {
         this.chief = chief;
-    }
-
-    /**
-     * Affiche les données de la tâche
-     */
-    public String printTask() {
-        StringBuilder taskFormat;
-        if(description.isBlank()) {
-            taskFormat = new StringBuilder(String.format("%s : / %dj ", name, duration));
-        } else {
-            taskFormat = new StringBuilder(String.format("%s : %s %dj ", name, description, duration));
-        }
-
-        taskFormat.append("Requis : - ");
-        for (Task prior : priors) {
-            taskFormat.append(String.format("%s - ", prior.getName()));
-        }
-        taskFormat.append("\n");
-        return taskFormat.toString();
     }
 }

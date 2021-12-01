@@ -4,7 +4,6 @@ import org.helmo.plan2track.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Classe permettant de modifier le montage et les tâches
@@ -12,7 +11,7 @@ import java.util.Scanner;
 public class EditSuperviser {
 
     private final MontageEditedEventHandler rsv;
-    private Montage montage;
+    private final Montage montage;
     private final List<Chief> teamLeaders = new ChiefFactory().getTeamLeadersList();
 
     public void createMontage(String name) {
@@ -38,10 +37,6 @@ public class EditSuperviser {
         rsv.onMontageEdited();
     }
 
-    public List<Task> getMontageTasks() {
-        return montage.getTasks();
-    }
-
     /***
      * Modifie le nom de la tâche
      */
@@ -61,10 +56,6 @@ public class EditSuperviser {
 
         this.montage.addTasks(taskToAdd);
         notifyHandlers();
-    }
-
-    private boolean verifyBlank(String s) {
-        return s.isBlank();
     }
 
     private void addPriorTask(List<Task> priorsTasks, String priorTaskName) {
@@ -117,13 +108,5 @@ public class EditSuperviser {
         String taskNameToAssign = this.montage.getTasks().get(taskIndex).getName();
         this.montage.searchTaskByName(taskNameToAssign).addChief(teamLeaders.get(chiefChoice));
         notifyHandlers();
-    }
-
-    private void findCriticalTasks() {
-        if(this.montage.getTasks().isEmpty()) {
-            System.out.println("Aucune tâche critique");
-        } else {
-
-        }
     }
 }

@@ -2,14 +2,13 @@ package org.helmo.plan2track.supervisers;
 
 import org.helmo.plan2track.entities.Montage;
 import org.helmo.plan2track.entities.MontageEditedEventHandler;
-import org.helmo.plan2track.entities.Task;
 import org.helmo.plan2track.view.EditView;
 
 /**
  * Classe permettant de créer un montage
  */
 public class ReadSuperviser implements MontageEditedEventHandler {
-    private Montage montage;
+    private final Montage montage;
     private ReadView rView;
     private EditView eView;
 
@@ -32,9 +31,7 @@ public class ReadSuperviser implements MontageEditedEventHandler {
         return this.montage.montageExist();
     }
 
-    public boolean checkTaskExistInMontage(Task t) {
-        return montage.getTasks().contains(t);
-    }
+    //public boolean checkTaskExistInMontage(Task t) { return montage.getTasks().contains(t); }
 
     @Override
     public void onMontageEdited() {

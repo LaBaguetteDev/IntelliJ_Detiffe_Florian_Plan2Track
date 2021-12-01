@@ -4,16 +4,13 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import org.helmo.plan2track.entities.Montage;
 import org.helmo.plan2track.entities.Task;
 import org.helmo.plan2track.supervisers.ReadSuperviser;
 import org.helmo.plan2track.supervisers.ReadView;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MontageView implements ReadView {
@@ -22,7 +19,12 @@ public class MontageView implements ReadView {
 
     private final ReadSuperviser rsv;
 
-    TableView<Task> tv = new TableView<Task>();
+    VBox vBox = new VBox(); {
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(5);
+    }
+
+    TableView<Task> tv = new TableView<>();
     TableColumn<Task, String> tcName = new TableColumn<>("Tâche"); {
         tcName.prefWidthProperty().bind(tv.widthProperty().multiply(0.2));
         tcName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getName()));
@@ -41,7 +43,7 @@ public class MontageView implements ReadView {
         tcAnt.setCellValueFactory((TableColumn.CellDataFeatures<Task, String> p) -> {
             List<Task> antTasks = p.getValue().getPriors();
             String val = antTasks.stream()
-                    .map(item -> item.getName())
+                    .map(Task::getName)
                     .collect(Collectors.joining(", "));
             return new ReadOnlyStringWrapper(val);
         });
@@ -53,26 +55,21 @@ public class MontageView implements ReadView {
     }
 
 
-    Label montageNameLb = new Label();
+    Label montageNameLb = new Label(); {
+        montageNameLb.setFont(new Font("Segoe UI", 20));
+    }
 
     public MontageView(ReadSuperviser rsv) {
         this.rsv = rsv;
         setContent();
     }
 
-    public Tab getMontageView() {
-
-        VBox vBox = new VBox(); vBox.setPadding(new Insets(10)); vBox.setSpacing(5);
-
-        montageNameLb.setFont(new Font("Segoe UI", 20));
-
+    public Tab getMontageViewTab() {
         tv.getColumns().addAll(tcName, tcDescription, tcDuree, tcAnt, tcChief);
-
         vBox.getChildren().addAll(montageNameLb, tv);
 
         mt.setContent(vBox);
         mt.setClosable(false);
-
         if(rsv.checkMontageExist()) {
             mt.setDisable(true);
         }

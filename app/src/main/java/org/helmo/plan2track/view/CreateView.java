@@ -12,53 +12,72 @@ public class CreateView {
     private final Tab ct = new Tab("Créer montage");
     private final EditSuperviser esv;
 
+    HBox hBox = new HBox(); {
+        hBox.setPadding(new Insets(10));
+        hBox.setSpacing(10);
+    }
+
+    Label newMontageLabel = new Label("Nom du montage : "); {
+        newMontageLabel.setPadding(new Insets(5));
+    }
+
+    TextField montageNameField = new TextField();
+    Button createBtn = new Button("Créer");
+
+
     public CreateView(EditSuperviser csv) {
         this.esv = csv;
         setCreateViewBp();
     }
 
-    public Tab getCreateViewBp() {
+    public Tab getCreateViewTab() {
         return ct;
     }
 
     private void setCreateViewBp() {
-        HBox hBox = new HBox(); hBox.setPadding(new Insets(10)); hBox.setSpacing(10);
-
-        Label newMontageLabel = new Label("Nom du montage : "); newMontageLabel.setPadding(new Insets(5));
-        TextField montageNameField = new TextField();
-        Button createBtn = new Button("Créer");
-
         hBox.getChildren().addAll(newMontageLabel, montageNameField, createBtn);
 
         ct.setContent(hBox);
         ct.setClosable(false);
 
+        createBtnSetAction();
+    }
+
+    private void createBtnSetAction() {
         createBtn.setOnAction(e -> {
             if(montageNameField.getText().isBlank()) {
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("Nom du montage vide");
-                a.setHeaderText("");
-                a.setContentText("Vous ne pouvez pas créer un montage avec un nom blanc");
-                a.showAndWait();
+                emptyNameAlert();
             }
             else if(checkMontageExist()) {
                 esv.createMontage(montageNameField.getText());
                 montageNameField.setText("");
             } else {
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                a.setTitle("Montage déjà existant");
-                a.setHeaderText("");
-                a.setContentText("Etes-vous sûr de vouloir écraser le montage existant ?");
-
-                Optional<ButtonType> result = a.showAndWait();
-                if(result.get() == ButtonType.OK) {
-                    esv.createMontage(montageNameField.getText());
-                }
+                montageAlreadyExistAlert();
             }
         });
     }
 
-    public boolean checkMontageExist() {
+    private void montageAlreadyExistAlert() {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setTitle("Montage déjà existant");
+        a.setHeaderText("");
+        a.setContentText("Etes-vous sûr de vouloir écraser le montage existant ?");
+
+        Optional<ButtonType> result = a.showAndWait();
+        if(result.get() == ButtonType.OK) {
+            esv.createMontage(montageNameField.getText());
+        }
+    }
+
+    private void emptyNameAlert() {
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Nom du montage vide");
+        a.setHeaderText("");
+        a.setContentText("Vous ne pouvez pas créer un montage avec un nom blanc");
+        a.showAndWait();
+    }
+
+    private boolean checkMontageExist() {
         return esv.montageExist();
     }
 }

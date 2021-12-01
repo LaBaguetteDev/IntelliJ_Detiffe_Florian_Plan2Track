@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChiefTest {
 
-    @Test
+    /*@Test
     void returnChiefName() {
         Chief c = new Chief("Florian");
 
         assertEquals("Florian", c.getName());
-    }
+    }*/
 }
