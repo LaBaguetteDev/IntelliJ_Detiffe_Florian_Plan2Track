@@ -13,6 +13,9 @@ public class CriticalTasks {
 
         if(m != null) {
             List<Task> tasks = m.getTasks();
+            createCopyOfTaskList(tasks);
+            determineTaskLevels(tasks);
+            earliestEndDate = getDateFinAuPlusTot();
 
         }
     }

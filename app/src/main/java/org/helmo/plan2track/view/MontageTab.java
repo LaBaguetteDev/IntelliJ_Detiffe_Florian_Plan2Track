@@ -63,7 +63,7 @@ public class MontageTab implements ReadView {
         setBtnOnAction();
     }
 
-    Label criticalTasklabel = new Label("Test");
+    Label criticalTasklabel = new Label();
 
     private void setBtnOnAction() {
         calculateCriticalTasksBtn.setOnAction(e -> {

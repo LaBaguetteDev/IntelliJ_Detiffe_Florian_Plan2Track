@@ -49,10 +49,12 @@ public class ReadSuperviser implements MontageEditedEventHandler {
                 }
             }
 
-            rs += "Date de fin au plus tôt = " + ct.getEarliestEndDate() + "jours après la date de début";
-        }
+            rs += "Date de fin au plus tôt = " + ct.getEarliestEndDate() + " jours après la date de début";
 
-        return rs;
+            return rs;
+        } else {
+            return "Aucune tâche critique";
+        }
     }
 
     @Override
