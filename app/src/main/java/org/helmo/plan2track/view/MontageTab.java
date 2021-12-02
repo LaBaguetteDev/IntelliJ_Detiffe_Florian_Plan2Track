@@ -13,7 +13,7 @@ import org.helmo.plan2track.supervisers.ReadView;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MontageView implements ReadView {
+public class MontageTab implements ReadView {
 
     private final Tab mt = new Tab("Voir montage");
 
@@ -59,14 +59,26 @@ public class MontageView implements ReadView {
         montageNameLb.setFont(new Font("Segoe UI", 20));
     }
 
-    public MontageView(ReadSuperviser rsv) {
+    Button calculateCriticalTasksBtn = new Button("Calculer la date au plus tôt et les tâches critiques"); {
+        setBtnOnAction();
+    }
+
+    Label criticalTasklabel = new Label("Test");
+
+    private void setBtnOnAction() {
+        calculateCriticalTasksBtn.setOnAction(e -> {
+            criticalTasklabel.setText(rsv.getCriticalTasksString());
+        });
+    }
+
+    public MontageTab(ReadSuperviser rsv) {
         this.rsv = rsv;
         setContent();
     }
 
     public Tab getMontageViewTab() {
         tv.getColumns().addAll(tcName, tcDescription, tcDuree, tcAnt, tcChief);
-        vBox.getChildren().addAll(montageNameLb, tv);
+        vBox.getChildren().addAll(montageNameLb, tv, calculateCriticalTasksBtn, criticalTasklabel);
 
         mt.setContent(vBox);
         mt.setClosable(false);
@@ -95,5 +107,15 @@ public class MontageView implements ReadView {
     @Override
     public void setEnable() {
         mt.setDisable(false);
+    }
+
+    @Override
+    public void setCriticalTasksString(String label) {
+
+    }
+
+    @Override
+    public void setDateAuPlusTotString(String label) {
+
     }
 }

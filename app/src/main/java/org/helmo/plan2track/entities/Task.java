@@ -123,4 +123,5 @@ public class Task {
     public void addChief(Chief chief) {
         this.chief = chief;
     }
+
 }

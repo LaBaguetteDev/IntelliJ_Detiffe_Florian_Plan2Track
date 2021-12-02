@@ -1,6 +1,7 @@
 package org.helmo.plan2track.pert;
 
 import org.helmo.plan2track.entities.CriticalTasks;
+import org.helmo.plan2track.entities.CriticalTasksold;
 import org.helmo.plan2track.entities.Task;
 import org.junit.jupiter.api.Test;
 
@@ -49,47 +50,42 @@ class CriticalTasksTest {
 
         List<Task> initialList = List.of(a, b, c, d, e, f, g, h, i, j);
         CriticalTasks ct = new CriticalTasks(initialList);
-        Map<Integer, List<Task>> actualLevels = ct.getResult();
 
-
-        /*for (var entry : actualLevels.entrySet()) {
-            System.out.println("Niveau " + entry.getKey());
-            for (var t : entry.getValue()) {
-                System.out.println(t.getName());
-            }
-        }*/
-
-        System.out.println("Date de fin au plus tot : " + ct.getDateFinAuPlusTot());
-
-        assertTrue(expectedLevels.equals(actualLevels));
+        assertEquals(12, ct.getEarliestEndDate());
 
 
     }
 
     @Test
+    void determinelevelTest1() {
+        Task a, b, c;
+        a = new Task("Démonter scène", 1);
+        b = new Task("Rapatriement scène", 1, a);
+        c = new Task("Montage scène", 1, b);
+
+        List<Task> initialList = List.of(a, b, c);
+        CriticalTasks ct = new CriticalTasks(initialList);
+
+        assertEquals(3, ct.getEarliestEndDate());
+    }
+
+
+    @Test
     void determinelevelTest2() {
         Task a, b, c, d, e, f, g;
-        a = new Task("a", 6);
-        b = new Task("b", 5);
-        c = new Task("c", 4, a);
-        d = new Task("d", 6, b);
-        e = new Task("e", 5, c);
-        f = new Task("f", 6, a, d);
-        g = new Task("g", 4, e, f);
+        a = new Task("A", 6);
+        b = new Task("B", 5);
+        c = new Task("C", 4, a);
+        d = new Task("D", 6, b);
+        e = new Task("E", 5, c);
+        f = new Task("F", 6, a, d);
+        g = new Task("G", 4, e, f);
 
         List<Task> initialList = List.of(a, b, c, d, e, f, g);
         CriticalTasks ct = new CriticalTasks(initialList);
-        Map<Integer, List<Task>> actualLevels = ct.getResult();
 
+        assertEquals(21, ct.getEarliestEndDate());
 
-        for (var entry : actualLevels.entrySet()) {
-            System.out.println("Niveau " + entry.getKey());
-            for (var t : entry.getValue()) {
-                System.out.println(t.getName());
-            }
-        }
-
-        System.out.println("Date de fin au plus tot : " + ct.getDateFinAuPlusTot());
     }
 
     @Test
@@ -114,15 +110,17 @@ class CriticalTasksTest {
 
         List<Task> initialList = List.of(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
         CriticalTasks ct = new CriticalTasks(initialList);
-        Map<Integer, List<Task>> actualLevels = ct.getResult();
 
-        for (var entry : actualLevels.entrySet()) {
-            System.out.println("Niveau " + entry.getKey());
-            for (var t : entry.getValue()) {
-                System.out.println(t.getName());
-            }
-        }
+        assertEquals(35, ct.getEarliestEndDate());
+    }
 
-        System.out.println("Date de fin au plus tot : " + ct.getDateFinAuPlusTot());
+    @Test
+    void determineTask4() {
+        Task a = new Task("a", 6);
+
+        List<Task> initialList = List.of(a);
+        CriticalTasksold ct = new CriticalTasksold(initialList);
+
+        System.out.println(ct.getDateFinAuPlusTot());
     }
 }

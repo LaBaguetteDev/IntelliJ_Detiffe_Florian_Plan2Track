@@ -7,7 +7,7 @@ import org.helmo.plan2track.supervisers.EditSuperviser;
 
 import java.util.Optional;
 
-public class CreateView {
+public class CreateTab {
 
     private final Tab ct = new Tab("Créer montage");
     private final EditSuperviser esv;
@@ -25,7 +25,7 @@ public class CreateView {
     Button createBtn = new Button("Créer");
 
 
-    public CreateView(EditSuperviser csv) {
+    public CreateTab(EditSuperviser csv) {
         this.esv = csv;
         setCreateViewBp();
     }

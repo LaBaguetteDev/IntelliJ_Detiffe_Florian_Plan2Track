@@ -6,14 +6,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import org.helmo.plan2track.entities.Task;
 import org.helmo.plan2track.supervisers.EditSuperviser;
+import org.helmo.plan2track.supervisers.EditView;
 import org.helmo.plan2track.supervisers.ReadSuperviser;
-import org.helmo.plan2track.supervisers.ReadView;
 
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
-public class EditView implements ReadView {
+public class EditTab implements EditView {
 
     private final EditSuperviser esv;
     private final ReadSuperviser rsv;
@@ -169,7 +169,7 @@ public class EditView implements ReadView {
     }
 
     // Constructeur
-    public EditView(EditSuperviser esv, ReadSuperviser rsv) {
+    public EditTab(EditSuperviser esv, ReadSuperviser rsv) {
         this.esv = esv;
         this.rsv = rsv;
         setContent();

@@ -2,42 +2,29 @@ package org.helmo.plan2track.entities;
 
 import java.util.*;
 
-public class CriticalTasks {
+public class CriticalTasksold {
 
     private final SortedMap<Integer, List<Task>> stepOneResult = new TreeMap<>();
     List<Task> initialTaskList = new ArrayList<>();
     List<Task> criticalTasks = new ArrayList<>();
-    int earliestEndDate;
 
-    public CriticalTasks(Montage m) {
-
-        if(m != null) {
-            List<Task> tasks = m.getTasks();
-
-        }
+    public CriticalTasksold(List<Task> tasks) {
+        createCopyOfTaskList(tasks);
+        determineTaskLevels(tasks);
     }
-
-    public CriticalTasks(List<Task> tasks) {
-        if(!tasks.isEmpty()) {
-            createCopyOfTaskList(tasks);
-            determineTaskLevels(tasks);
-            earliestEndDate = getDateFinAuPlusTot();
-        }
-    }
-
-    public List<Task> getCriticalTasks() {
-        return criticalTasks;
-    }
-
-    public int getEarliestEndDate() {
-        return earliestEndDate;
-    }
-
 
     private void createCopyOfTaskList(List<Task> tasks) {
         for (var t : tasks) {
             initialTaskList.add(new Task(t.getName(), t.getDuration(), t.getDescription(), t.getPriors()));
         }
+    }
+
+    public Map<Integer, List<Task>> getResult() {
+        return stepOneResult;
+    }
+
+    public List<Task> getCriticalTasks() {
+        return criticalTasks;
     }
 
     private void determineTaskLevels(List<Task> tasks) {
@@ -81,7 +68,7 @@ public class CriticalTasks {
         }
     }
 
-    private int getDateFinAuPlusTot() {
+    public int getDateFinAuPlusTot() {
         Task highestLevelTask = stepOneResult.get(stepOneResult.lastKey()).get(0);
         criticalTasks.add(highestLevelTask);
         int duree = highestLevelTask.getDuration();
@@ -91,7 +78,7 @@ public class CriticalTasks {
         return duree;
     }
 
-    private int getHighestLevelTaskDuration(List<Task> tasks) {
+    public int getHighestLevelTaskDuration(List<Task> tasks) {
         int max = Integer.MIN_VALUE;
         Task correctTask = null;
         for (var t : tasks) {
@@ -105,21 +92,16 @@ public class CriticalTasks {
             }
         }
 
-        if(correctTask != null) {
-            criticalTasks.add(correctTask);
-            if(correctTask.getPriors().isEmpty()) {
-                return correctTask.getDuration();
-            } else {
-                return correctTask.getDuration() + getHighestLevelTaskDuration(correctTask.getPriors());
-            }
+        criticalTasks.add(correctTask);
+        if(correctTask.getPriors().isEmpty()) {
+            return correctTask.getDuration();
         } else {
-            return 0;
+            return correctTask.getDuration() + getHighestLevelTaskDuration(correctTask.getPriors());
         }
-
 
     }
 
-    private Task getHighestDurationTask(List<Task> tasks) {
+    public Task getHighestDurationTask(List<Task> tasks) {
         int duree = 0;
         Task correctTask = null;
         for (var t : tasks) {
@@ -132,7 +114,7 @@ public class CriticalTasks {
         return correctTask;
     }
 
-    private int getTaskLevel(Task task) {
+    public int getTaskLevel(Task task) {
         int lvl = 0;
 
         for(var entry : stepOneResult.entrySet()) {
@@ -145,5 +127,7 @@ public class CriticalTasks {
 
         return lvl;
     }
+
+
 
 }

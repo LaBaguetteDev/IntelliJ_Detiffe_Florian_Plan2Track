@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 import org.helmo.plan2track.entities.Montage;
 import org.helmo.plan2track.supervisers.EditSuperviser;
 import org.helmo.plan2track.supervisers.ReadSuperviser;
-import org.helmo.plan2track.view.CreateView;
-import org.helmo.plan2track.view.EditView;
+import org.helmo.plan2track.view.CreateTab;
+import org.helmo.plan2track.view.EditTab;
 import org.helmo.plan2track.view.MainView;
-import org.helmo.plan2track.view.MontageView;
+import org.helmo.plan2track.view.MontageTab;
 
 /**
  * Classe principale
@@ -38,9 +38,9 @@ public class Main extends Application {
         EditSuperviser esv = new EditSuperviser(m, rsv);
 
 
-        CreateView cView = new CreateView(esv);
-        MontageView mView = new MontageView(rsv);
-        EditView eView = new EditView(esv, rsv);
+        CreateTab cView = new CreateTab(esv);
+        MontageTab mView = new MontageTab(rsv);
+        EditTab eView = new EditTab(esv, rsv);
 
         var mv = new MainView(
                 cView.getCreateViewTab(),
