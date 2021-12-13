@@ -1,12 +1,7 @@
 package org.helmo.plan2track.supervisers;
 
-import org.helmo.plan2track.entities.CriticalTasks;
-import org.helmo.plan2track.entities.Montage;
-import org.helmo.plan2track.entities.MontageEditedEventHandler;
-import org.helmo.plan2track.entities.Task;
-import org.helmo.plan2track.view.EditTab;
+import org.helmo.plan2track.entities.*;
 
-import java.util.List;
 
 /**
  * Classe permettant de créer un montage
@@ -14,8 +9,7 @@ import java.util.List;
 public class ReadSuperviser implements MontageEditedEventHandler {
     private final Montage montage;
     private ReadView rView;
-    private EditTab eView;
-    private CriticalTasks ct;
+    private ReadView eView;
 
     /**
      * Initialise un ReadSuperviser avec un montage
@@ -24,39 +18,58 @@ public class ReadSuperviser implements MontageEditedEventHandler {
         this.montage = montage;
     }
 
+    /**
+     * Permet de récupérer la vue qui visualise le montage en cours
+     * @param rView Interface de la vue du montage
+     */
     public void setReadView(ReadView rView) {
         this.rView = rView;
     }
 
-    public void setEditView(EditTab eView) {
+    /**
+     * Permet de récupérer la vue qui édite le montage en cours
+     * @param eView Interface d'édition du montage
+     */
+    public void setEditView(ReadView eView) {
         this.eView = eView;
     }
 
+    /**
+     * Permet de vérifier si un montage est déjà en cours de création
+     * @return Vrai si un montage a déjà été créé
+     *          Faux sinon
+     */
     public boolean checkMontageExist() {
         return this.montage.montageExist();
     }
 
-    public String getCriticalTasksString() {
-        String rs = "";
-        if(!montage.getTasks().isEmpty()) {
-            ct = new CriticalTasks(montage);
-            List<Task> criticalTasks = ct.getCriticalTasks();
-            for (int i = 0; i < criticalTasks.size(); i++) {
-                if(criticalTasks.size() > i+1) {
-                    rs += criticalTasks.get(i).getName() + ", requise pour " + criticalTasks.get(i+1).getName() + "\n";
-                } else {
-                    rs += criticalTasks.get(i).getName() + "\n";
-                }
-            }
-
-            rs += "Date de fin au plus tôt = " + ct.getEarliestEndDate() + " jours après la date de début";
-
-            return rs;
-        } else {
-            return "Aucune tâche critique";
-        }
+    /**
+     * Permet de vérifier qu'un montage possède des tâches
+     * @return Vrai si le montage possède des tâches
+     *          Faux sinon
+     */
+    public boolean checkMontageHasTasks() {
+        return !montage.isEmpty();
     }
 
+    /**
+     * Vérifier qu'une tâche existe déjà
+     * @param taskName Nom de la tâche à vérifier
+     * @return Vrai si la tâche existe déjà
+     *          Faux sinon
+     */
+    public boolean checkTaskAlreadyExist(String taskName) {
+        for (var t : this.montage.getTasks()) {
+            if(t.hasSameName(taskName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Permet de modifier la données des vues lorsque le montage a été édite
+     */
     @Override
     public void onMontageEdited() {
         rView.setTitle(montage.getName());

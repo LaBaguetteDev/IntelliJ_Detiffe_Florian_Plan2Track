@@ -14,16 +14,6 @@ public class EditSuperviser {
     private final Montage montage;
     private final List<Chief> teamLeaders = new ChiefFactory().getTeamLeadersList();
 
-    public void createMontage(String name) {
-        this.montage.resetMontage();
-        this.montage.setName(name);
-        notifyHandlers();
-    }
-
-    public boolean montageExist() {
-        return this.montage.montageExist();
-    }
-
     /**
      * Initisalise un editSuperviser avec un ReadSuperviser
      * @param rsv ReadSuperviser
@@ -33,8 +23,26 @@ public class EditSuperviser {
         this.rsv = rsv;
     }
 
+    /**
+     * Méthode permettant de créer un montage
+     * @param name Nom du montage
+     */
+    public void createMontage(String name) {
+        this.montage.resetMontage();
+        this.montage.setName(name);
+        notifyHandlers();
+    }
+
     private void notifyHandlers() {
         rsv.onMontageEdited();
+    }
+
+    /**
+     * Vérifie si un montage existe déjà ou non
+     * @return
+     */
+    public boolean montageExist() {
+        return this.montage.montageExist();
     }
 
     /***
@@ -45,8 +53,14 @@ public class EditSuperviser {
         notifyHandlers();
     }
 
+    /**
+     * Permet d'ajouter une tâche au montage
+     * @param taskName Nom de la tâche
+     * @param taskDescription Description de la tâche
+     * @param taskDuration Durée de la tâche
+     * @param antTasks Tâches antérieures de la tâche
+     */
     public void addTask(String taskName, String taskDescription, int taskDuration, List<String> antTasks) {
-
         List<Task> antTaskObjects = new ArrayList<>();
         for (var s : antTasks) {
             addPriorTask(antTaskObjects, s);
@@ -71,6 +85,11 @@ public class EditSuperviser {
         }
     }
 
+    /**
+     * Permet de connaître le nombre de tâches associées à une tâche
+     * @param taskIndex Index de la tâche dont on veut savoir le nombre de tâches associées
+     * @return Le nombre de tâche associées à une tâche
+     */
     public int getAssociateNumber(int taskIndex) {
         Task t = this.montage.getTasks().get(taskIndex);
         int i = 0;
@@ -79,7 +98,6 @@ public class EditSuperviser {
                 i++;
             }
         }
-
         return i;
     }
 
@@ -88,14 +106,15 @@ public class EditSuperviser {
      */
     public void deleteTask(int taskIndex) {
         String taskNameToDelete = this.montage.getTasks().get(taskIndex).getName();
-        for (Task task : this.montage.getTasks()) {
-            task.deletePriorTaskByName(taskNameToDelete);
-        }
         this.montage.deleteTask(taskNameToDelete);
         notifyHandlers();
     }
 
 
+    /**
+     * Permet d'obtenir le nom de tous les chefs d'équipe
+     * @return La liste des chefs d'équipe
+     */
     public List<String> getChiefNames() {
         List<String> chiefsNames = new ArrayList<>();
         for (var tl : this.teamLeaders) {
@@ -104,6 +123,11 @@ public class EditSuperviser {
         return chiefsNames;
     }
 
+    /**
+     * Permet d'associer une tâche à un chef d'équipe
+     * @param taskIndex Index de la tâche à associer
+     * @param chiefChoice Index du chef d'équipe à assigner
+     */
     public void assignChief(int taskIndex, int chiefChoice) {
         String taskNameToAssign = this.montage.getTasks().get(taskIndex).getName();
         this.montage.searchTaskByName(taskNameToAssign).addChief(teamLeaders.get(chiefChoice));

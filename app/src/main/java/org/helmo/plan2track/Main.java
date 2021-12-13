@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.helmo.plan2track.entities.Montage;
 import org.helmo.plan2track.supervisers.EditSuperviser;
+import org.helmo.plan2track.supervisers.PlanningSuperviser;
 import org.helmo.plan2track.supervisers.ReadSuperviser;
 import org.helmo.plan2track.view.CreateTab;
 import org.helmo.plan2track.view.EditTab;
@@ -25,21 +26,17 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        /*ReadSuperviser rsv = new ReadSuperviser();
-        EditSuperviser esv = new EditSuperviser(rsv);
-        SelectSuperviser ssv = new SelectSuperviser(rsv, esv);
-        ssv.menu();*/
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Montage m = new Montage("Aucun montage créé");
         ReadSuperviser rsv = new ReadSuperviser(m);
+        PlanningSuperviser psv = new PlanningSuperviser(m);
         EditSuperviser esv = new EditSuperviser(m, rsv);
 
-
         CreateTab cView = new CreateTab(esv);
-        MontageTab mView = new MontageTab(rsv);
+        MontageTab mView = new MontageTab(rsv, psv);
         EditTab eView = new EditTab(esv, rsv);
 
         var mv = new MainView(
@@ -48,9 +45,6 @@ public class Main extends Application {
                 eView.getEditViewTab());
 
         Scene scene = new Scene(mv.getBorderPane(), 800, 600);
-
-        //String css = getClass().getResource("/style.css").toExternalForm();
-        //scene.getStylesheets().add(css);
 
         primaryStage.setTitle("Plan2Track - Florian Detiffe");
         primaryStage.setScene(scene);

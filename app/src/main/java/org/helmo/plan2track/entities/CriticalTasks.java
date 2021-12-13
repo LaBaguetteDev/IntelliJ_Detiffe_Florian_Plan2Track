@@ -2,26 +2,39 @@ package org.helmo.plan2track.entities;
 
 import java.util.*;
 
+/**
+ * Classe permettant de savoir les tâches critiques d'un montage ainsi que sa date de fin au plus tôt
+ *
+ * Choix de collections :
+ * Niveau des tâches :
+ * Interface :
+ * J'ai choisi une SortedMap car j'ai besoin d'associer un niveau à une liste de tâches. Une interface de type
+ * clé - valeur m'a donc semblé évident. La clé correspond donc au niveau et la valeur correspond à la liste
+ * de tâches de ce niveau.
+ * J'avais aussi besoin que les tâches soient triées par niveau et je dois pouvoir accéder au dernier niveau
+ * d'une tâche pour pouvoir calculer les tâches critiques et la date au plus tôt d'un montage. J'ai donc choisi
+ * une SortedMap pour pouvoir avoir accès à la méthode lastKey() qui renvoie la dernière clé de la Map.
+ *
+ * Implémentation :
+ * Les méthodes d'insertion et de recherche d'une TreeMap ont une complexité temporelle logarithmique
+ * Etant donné que les élements sont triés en arbre. TreeMap est la seule implémentation possible d'une
+ * SortedMap avec ConcurrentSkipListMap.
+ */
 public class CriticalTasks {
 
-    private final SortedMap<Integer, List<Task>> stepOneResult = new TreeMap<>();
-    List<Task> initialTaskList = new ArrayList<>();
-    List<Task> criticalTasks = new ArrayList<>();
-    int earliestEndDate;
+    private final SortedMap<Integer, List<Task>> taskLevels = new TreeMap<>();
+    private final List<Task> initialTaskList = new ArrayList<>();
+    private final List<Task> criticalTasks = new ArrayList<>();
+    private int earliestEndDate;
 
+    /**
+     * Initialise les tâches critique et la date de fin au plus tôt
+     * à partir du montage entré en paramètre
+     * @param m Montage contenant la liste de tâche dont on veut obtenir les statistiques
+     */
     public CriticalTasks(Montage m) {
-
         if(m != null) {
             List<Task> tasks = m.getTasks();
-            createCopyOfTaskList(tasks);
-            determineTaskLevels(tasks);
-            earliestEndDate = getDateFinAuPlusTot();
-
-        }
-    }
-
-    public CriticalTasks(List<Task> tasks) {
-        if(!tasks.isEmpty()) {
             createCopyOfTaskList(tasks);
             determineTaskLevels(tasks);
             earliestEndDate = getDateFinAuPlusTot();
@@ -50,46 +63,53 @@ public class CriticalTasks {
         while (!tasksCopy.isEmpty()) {
             l++;
             List<Task> toRemove = new ArrayList<>();
-            for (Task t : tasksCopy) {
-                int sum = t.getPriors().size();
-
-                if(sum == 0) {
-                    this.stepOneResult.computeIfAbsent(l, level -> new ArrayList<>()).add(t);
-                    toRemove.add(t);
-                }
-            }
+            BrowsTasks(tasksCopy, l, toRemove);
             tasksCopy.removeAll(toRemove);
             removeSumZeroTask(tasksCopy, toRemove);
         }
-
         reAddPriorTaskToResult();
+    }
+
+    private void BrowsTasks(List<Task> tasksCopy, int l, List<Task> toRemove) {
+        for (Task t : tasksCopy) {
+            if(t.hasNoPriors()) {
+                this.taskLevels.computeIfAbsent(l, level -> new ArrayList<>()).add(t);
+                toRemove.add(t);
+            }
+        }
     }
 
     private void removeSumZeroTask(List<Task> tasks, List<Task> tasksToRemove) {
         for (Task t : tasks) {
-            for (Task tRemove : tasksToRemove)
-                t.deletePriorTaskByName(tRemove.getName());
+            for (Task tRemove : tasksToRemove) {
+                String tRemoveName = tRemove.getName();
+                t.deletePriorTaskByName(tRemoveName);
+            }
         }
     }
 
     private void reAddPriorTaskToResult() {
-        for (var entry : stepOneResult.entrySet()) {
+        for (var entry : taskLevels.entrySet()) {
             for (var taskInResult : entry.getValue()) {
-                for (var t : initialTaskList) {
-                    if(t.getName().equals(taskInResult.getName())) {
-                        taskInResult.setPriors(t.getPriors());
-                    }
-                }
+                browseInitialTaskList(taskInResult);
+            }
+        }
+    }
+    private void browseInitialTaskList(Task taskInResult) {
+        for (var t : initialTaskList) {
+            if(t.hasSameName(taskInResult)) {
+                taskInResult.setPriors(t.getPriors());
             }
         }
     }
 
     private int getDateFinAuPlusTot() {
-        Task highestLevelTask = stepOneResult.get(stepOneResult.lastKey()).get(0);
+        var lastKey = taskLevels.lastKey();
+        var lastValue = taskLevels.get(lastKey);
+        Task highestLevelTask = lastValue.get(0);
         criticalTasks.add(highestLevelTask);
         int duree = highestLevelTask.getDuration();
-        duree += getHighestLevelTaskDuration(stepOneResult.get(stepOneResult.lastKey()).get(0).getPriors());
-
+        duree += getHighestLevelTaskDuration(highestLevelTask.getPriors());
         Collections.reverse(criticalTasks);
         return duree;
     }
@@ -108,9 +128,13 @@ public class CriticalTasks {
             }
         }
 
+        return searchInPriorTasks(correctTask);
+    }
+
+    private int searchInPriorTasks(Task correctTask) {
         if(correctTask != null) {
             criticalTasks.add(correctTask);
-            if(correctTask.getPriors().isEmpty()) {
+            if(correctTask.hasNoPriors()) {
                 return correctTask.getDuration();
             } else {
                 return correctTask.getDuration() + getHighestLevelTaskDuration(correctTask.getPriors());
@@ -118,8 +142,6 @@ public class CriticalTasks {
         } else {
             return 0;
         }
-
-
     }
 
     private Task getHighestDurationTask(List<Task> tasks) {
@@ -138,15 +160,14 @@ public class CriticalTasks {
     private int getTaskLevel(Task task) {
         int lvl = 0;
 
-        for(var entry : stepOneResult.entrySet()) {
+        for(var entry : taskLevels.entrySet()) {
             for (var t : entry.getValue()) {
-                if(t.equals(task)) {
+                if (t.equals(task)) {
                     lvl = entry.getKey();
+                    break;
                 }
             }
         }
-
         return lvl;
     }
-
 }

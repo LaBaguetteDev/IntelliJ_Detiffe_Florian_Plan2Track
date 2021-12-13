@@ -2,14 +2,11 @@ package org.helmo.plan2track.entities;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChiefFactoryTest {
 
-    /*@Test
+    @Test
     void returnChiefList() {
         ChiefFactory cf = new ChiefFactory();
 
@@ -23,7 +20,5 @@ class ChiefFactoryTest {
                                 "Francois Ludewig".equals(c.getName())
             );
         }
-
-    }*/
-
+    }
 }

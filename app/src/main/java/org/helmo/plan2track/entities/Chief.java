@@ -17,4 +17,13 @@ public class Chief {
     public String getName() {
         return name;
     }
+
+    /**
+     * Vérifie que le chef d'équipe existe (qu'il a un nom)
+     * @return Vrai si le chef d'équipe existe
+     *          Faux sinon
+     */
+    public boolean exist() {
+        return !name.isBlank();
+    }
 }

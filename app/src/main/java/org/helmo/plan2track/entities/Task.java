@@ -1,7 +1,6 @@
 package org.helmo.plan2track.entities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class Task {
     private final String name;
     private String description = "";
     private final int duration;
-    private List<Task> priors = new ArrayList<>();
+    private final List<Task> priors = new ArrayList<>();
     private Chief chief = new Chief("");
 
     /**
@@ -24,25 +23,6 @@ public class Task {
     public Task(String name, int duration) {
         this.name = name;
         this.duration = duration;
-    }
-
-    /**
-     * Initialise une tâche avec un nom, une durée et une ou plusieurs tâches antérieurs
-     * @param name nom de la tâche
-     * @param duration durée de la tâche en jours
-     * @param priors tâches antérieures
-     */
-    public Task(String name, int duration, Task... priors) {
-        this.name = name;
-        this.duration = duration;
-        Collections.addAll(this.priors, priors);
-    }
-
-    public Task(String name, String description, int duration, Task... priors) {
-        this.name = name;
-        this.duration = duration;
-        this.description = description;
-        Collections.addAll(this.priors, priors);
     }
 
     /**
@@ -66,14 +46,23 @@ public class Task {
         return name;
     }
 
+    /**
+     * @return La description de la tâche
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @return La durée de la tâche
+     */
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * @return La durée de la tâche avec la mention "jours"
+     */
     public String getDurationString() {
         return duration + " jours";
     }
@@ -89,8 +78,12 @@ public class Task {
         return priors;
     }
 
+    /**
+     * Permet d'assigner des tâches antérieurs à la tâche
+     * @param priors Tâches antérieures à assigner
+     */
     public void setPriors(List<Task> priors) {
-        this.priors = List.copyOf(priors);
+        this.priors.addAll(priors);
     }
 
     /**
@@ -124,4 +117,41 @@ public class Task {
         this.chief = chief;
     }
 
+    /**
+     * Vérifie que la tâche a été assignée à un chef d'équipe
+     * @return Vrai si la tâche a été assignée
+     *          Faux sinon
+     */
+    public boolean hasBeenAssigned() {
+        return chief.exist();
+    }
+
+    /**
+     * Vérifie que la tâche possède des tâches antérieurs
+     * @return Vrai si la tâche ne possède pas de tâche antérieures
+     *          Faux si la tâche possède des tâches antérieures
+     */
+    public boolean hasNoPriors() {
+        return this.priors.isEmpty();
+    }
+
+    /**
+     * Vérifie qu'une tâche possède le même nom qu'une autre tâche
+     * @param t Tâche que l'on veut vérifier
+     * @return Vrai si la tâche possède le même nom
+     *          Faux sinon
+     */
+    public boolean hasSameName(Task t) {
+        return this.name.equals(t.getName());
+    }
+
+    /**
+     * Vérifie qu'une tâche possède le nom entré en paramètre
+     * @param tName Nom de tâche à vérifier
+     * @return Vrai si la tâche possède le nom
+     *          Faux sinon
+     */
+    public boolean hasSameName(String tName) {
+        return this.name.equals(tName);
+    }
 }
