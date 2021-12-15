@@ -18,13 +18,22 @@ public class ChiefFactory {
     }
 
     private void initChiefFactory() {
-        Chief hendrikx = new Chief("Nicolas Hendrikx");
-        Chief jadot = new Chief("Jean Jadot");
-        Chief ludewig = new Chief("Francois Ludewig");
+        Chief hendrikx = new Chief("Nicolas Hendrikx", "H2G2");
+        Chief jadot = new Chief("Jean Jadot", "J003");
+        Chief ludewig = new Chief("Francois Ludewig", "F004");
+        Chief dani = new Chief("Dani Bond", "D007");
+        Chief greta = new Chief("Greta Thumberg", "G021");
+        Chief gerard = new Chief("Gerard Muller", "F004");
+        Chief simon = new Chief("Simon Lamy", "S010");
+
 
         this.teamLeaders.add(hendrikx);
         this.teamLeaders.add(jadot);
         this.teamLeaders.add(ludewig);
+        this.teamLeaders.add(dani);
+        this.teamLeaders.add(greta);
+        this.teamLeaders.add(gerard);
+        this.teamLeaders.add(simon);
     }
 
     /**

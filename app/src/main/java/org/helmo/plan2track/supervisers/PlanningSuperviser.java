@@ -2,10 +2,7 @@ package org.helmo.plan2track.supervisers;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
-import org.helmo.plan2track.entities.CriticalTasks;
-import org.helmo.plan2track.entities.Montage;
-import org.helmo.plan2track.entities.Planning;
-import org.helmo.plan2track.entities.Task;
+import org.helmo.plan2track.entities.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -103,39 +100,6 @@ public class PlanningSuperviser {
      * @param startingDate Date de début du planning
      */
     public String writeToJson(Date startingDate) { //TODO Faire une nouvelle classe pour l'écriture en JSON
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Planning p = new Planning(montage, startingDate);
-        var pMap = p.getPlanning();
-        JsonArray planning = new JsonArray();
-        addToJsonArray(df, pMap, planning);
-        return writeFile(planning);
-    }
-
-    private void addToJsonArray(DateFormat df, Map<Task, Date> pMap, JsonArray planning) {
-        for (var entry : pMap.entrySet()) {
-            JsonObject t = new JsonObject();
-
-            var key = entry.getKey();
-            var value = entry.getValue();
-            var chief = key.getChief();
-            t.put("task", key.getName());
-            t.put("date", df.format(value));
-            t.put("chef", chief.getName());
-
-            planning.add(t);
-        }
-    }
-
-    private String writeFile(JsonArray planning) {
-        try {
-            File file = new File(montage.getName() + ".json");
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(planning.toJson());
-            fileWriter.flush();
-            return file.getAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return PlanningSerializer.writeToJson(new Planning(montage, startingDate), montage);
     }
 }

@@ -13,7 +13,7 @@ public class Task {
     private String description = "";
     private final int duration;
     private final List<Task> priors = new ArrayList<>();
-    private Chief chief = new Chief("");
+    private Chief chief = new Chief("", "");
 
     /**
      * Initialise une tâche avec un nom et une durée

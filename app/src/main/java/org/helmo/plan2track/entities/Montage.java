@@ -10,7 +10,7 @@ import java.util.List;
  * Choix de collection :
  * Interface :
  * J'ai choisi une List car je dois pouvoir ajouter facilement des tâches et les garder dans un certain
- * ordre pour que je puisse accéder à une tâche via son index, ce qui m'est utile pour calculer les tâches critiques,
+ * ordre pour que je puisse accéder à une tâche via sa position, ce qui m'est utile pour calculer les tâches critiques,
  * la date de fin au plus tôt du montage, ainsi que pour obtenir le planning. De plus, je n'ai pas besoin d'avoir une
  * collection triée.
  *
