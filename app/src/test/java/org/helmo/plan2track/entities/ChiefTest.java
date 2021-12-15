@@ -8,8 +8,10 @@ class ChiefTest {
 
     @Test
     void returnChiefName() {
-        Chief c = new Chief("Florian");
+        Chief c = new Chief("Florian", "F666");
 
         assertEquals("Florian", c.getName());
+        assertEquals("F666", c.getCode());
+        assertTrue(c.exist());
     }
 }

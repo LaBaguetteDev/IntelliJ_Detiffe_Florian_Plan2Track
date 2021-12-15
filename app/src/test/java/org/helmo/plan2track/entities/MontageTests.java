@@ -128,4 +128,39 @@ public class MontageTests {
         assertFalse(m.getTasks().contains(G));
     }
 
+    // Tests pour le coverage
+    @Test
+    void changeMontageName() {
+        Montage m = new Montage("Nom du montage");
+        assertEquals("Nom du montage", m.getName());
+
+        m.setName("Nouveau nom du montage");
+        assertEquals("Nouveau nom du montage", m.getName());
+    }
+
+    @Test
+    void clearTasksOnresetMontage() {
+        Montage m = new Montage("montage");
+        Task A = new Task("A", 6);
+        m.addTasks(A);
+
+        m.resetMontage();
+        assertTrue(m.isEmpty() && !m.montageExist());
+    }
+
+    @Test
+    void returnTaskWithHisName() {
+        Montage m = new Montage("montage");
+        Task A = new Task("tache A", 6);
+        m.addTasks(A);
+
+        assertEquals(A, m.searchTaskByName("tache A"));
+    }
+
+    @Test
+    void trueOnMontageNotExisting() {
+        Montage m = new Montage("montage");
+
+        assertTrue(m.montageExist());
+    }
 }

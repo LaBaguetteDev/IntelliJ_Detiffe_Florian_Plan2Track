@@ -99,7 +99,7 @@ public class PlanningSuperviser {
      * Permet d'écrire sur un fichier JSON le planning du montage
      * @param startingDate Date de début du planning
      */
-    public String writeToJson(Date startingDate) { //TODO Faire une nouvelle classe pour l'écriture en JSON
+    public String writeToJson(Date startingDate) {
         return PlanningSerializer.writeToJson(new Planning(montage, startingDate), montage);
     }
 }

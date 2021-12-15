@@ -16,10 +16,18 @@ public class Chief {
         this.code = code;
     }
 
+    /**
+     * Renvoie le nom du chef d'équipe
+     * @return Le nom
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Renvoie le code du chef d'équipe
+     * @return Le code
+     */
     public String getCode() {
         return code;
     }

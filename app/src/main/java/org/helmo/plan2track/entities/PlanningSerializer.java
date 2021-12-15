@@ -12,15 +12,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Classe permettant d'écrire les données d'un planning dans un fichier
+ * JSON à destination de l'application Tracker
+ */
 public class PlanningSerializer {
 
+    /**
+     * Ecrit les données du planning dans un fichier JSON
+     * @param planning  Planning du montage à sauvegarder
+     * @param montage   Montage à sauvegarder
+     * @return  Le chemin du fichier
+     */
     public static String writeToJson(Planning planning, Montage montage) {
         JsonArray planningJson = new JsonArray();
-        addToJsonArray(new SimpleDateFormat("yyyy-MM-dd"), planning.getPlanning(), planningJson, montage);
+        addToJsonArray(planning.getPlanning(), planningJson, montage);
         return writeFile(planningJson);
     }
 
-    private static void addToJsonArray(DateFormat df, Map<Task, Date> pMap, JsonArray planning, Montage montage) {
+    private static void addToJsonArray(Map<Task, Date> pMap, JsonArray planning, Montage montage) {
+        var df = new SimpleDateFormat("yyyy-MM-dd");
         for (var entry : pMap.entrySet()) {
             JsonObject task = new JsonObject();
             JsonObject t = new JsonObject();
@@ -50,7 +61,8 @@ public class PlanningSerializer {
 
     private static String writeFile(JsonArray planning) {
         try {
-            File file = new File("planning.json");
+            File file = new File("C:\\temp\\Plan2Track\\" + "planning.json");
+            file.getParentFile().mkdirs();
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(planning.toJson());
             fileWriter.flush();

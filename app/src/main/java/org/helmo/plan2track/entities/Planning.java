@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 public class Planning {
 
     private final Date startDate;
-
     private final Map<Task, Date> planning = new HashMap<>();
 
     /**
@@ -33,16 +32,6 @@ public class Planning {
     public Planning(Montage montage, Date startDate) {
         this.startDate = startDate;
         generatePlanning(montage.getTasks());
-    }
-
-    /**
-     * Initialise un planning avec une liste de tâche et une date de début
-     * @param tasks Liste de tâche dont on veut le planning
-     * @param startDate Date de début du planning
-     */
-    public Planning(List<Task> tasks, Date startDate) {
-        this.startDate = startDate;
-        generatePlanning(tasks);
     }
 
     /**

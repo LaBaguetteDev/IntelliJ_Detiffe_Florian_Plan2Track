@@ -26,14 +26,7 @@ public class ChiefFactory {
         Chief gerard = new Chief("Gerard Muller", "F004");
         Chief simon = new Chief("Simon Lamy", "S010");
 
-
-        this.teamLeaders.add(hendrikx);
-        this.teamLeaders.add(jadot);
-        this.teamLeaders.add(ludewig);
-        this.teamLeaders.add(dani);
-        this.teamLeaders.add(greta);
-        this.teamLeaders.add(gerard);
-        this.teamLeaders.add(simon);
+        this.teamLeaders.addAll(List.of(hendrikx, jadot, ludewig, dani, greta, gerard, simon));
     }
 
     /**
