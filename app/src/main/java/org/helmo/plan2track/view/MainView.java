@@ -32,7 +32,7 @@ public class MainView {
     public BorderPane getBorderPane() {
         TabPane tp = new TabPane();
         var tabs = tp.getTabs();
-        tabs.addAll(createView, montageView, editView);
+        tabs.addAll(createView, montageView, editView); //TODO Demeter ?
 
         bp.setCenter(tp);
 

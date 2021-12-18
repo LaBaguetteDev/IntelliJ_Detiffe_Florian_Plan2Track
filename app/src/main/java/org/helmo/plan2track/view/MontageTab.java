@@ -118,12 +118,14 @@ public class MontageTab implements ReadView {
         tid.setHeaderText("Veuillez entrer la date de début du planning");
         tid.setContentText("Format de la date à entrer : dd/mm/yyyy");
         Optional<String> result = tid.showAndWait();
-        dateInput = result.get(); //TODO GERER LE BOUTON CANCEL
-        try {
-            planningLabel.setText(psv.getPlanningString(new SimpleDateFormat("dd/MM/yyyy").parse(dateInput)));
-            publishToJson.setDisable(false);
-        } catch (ParseException ex) {
-            WrongDateFormatAlert();
+        if(result.isPresent()) {
+            dateInput = result.get();
+            try {
+                planningLabel.setText(psv.getPlanningString(new SimpleDateFormat("dd/MM/yyyy").parse(dateInput)));
+                publishToJson.setDisable(false);
+            } catch (ParseException ex) {
+                WrongDateFormatAlert();
+            }
         }
     }
     private void errorAlert() {

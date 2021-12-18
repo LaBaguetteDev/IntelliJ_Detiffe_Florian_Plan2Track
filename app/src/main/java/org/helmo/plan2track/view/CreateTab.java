@@ -44,7 +44,7 @@ public class CreateTab {
 
     private void setCreateViewBp() {
         var hBoxChildren = hBox.getChildren();
-        hBoxChildren.addAll(newMontageLabel, montageNameField, createBtn);
+        hBoxChildren.addAll(newMontageLabel, montageNameField, createBtn); //TODO Demeter ?
 
         ct.setContent(hBox);
         ct.setClosable(false);
@@ -70,7 +70,7 @@ public class CreateTab {
         a.setTitle("Montage déjà existant");
         a.setHeaderText("");
         a.setContentText("Etes-vous sûr de vouloir écraser le montage existant ?");
-        Optional<ButtonType> result = a.showAndWait();
+        Optional<ButtonType> result = a.showAndWait(); // TODO Demeter ?
         if(result.get() == ButtonType.OK) {
             esv.createMontage(montageNameField.getText());
         }

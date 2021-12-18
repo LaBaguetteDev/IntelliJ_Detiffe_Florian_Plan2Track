@@ -242,7 +242,7 @@ public class EditTab implements ReadView {
         for (var t : tasks) {
             tasksNames.add(t.getName());
         }
-        delTasksBox.getItems().setAll(tasksNames);
+        delTasksBox.getItems().setAll(tasksNames); //TODO Demeter ?
         assignTasksBox.getItems().setAll(tasksNames);
 
         initAssignChiefBox();
